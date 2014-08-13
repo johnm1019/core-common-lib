@@ -61,10 +61,18 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 // Must be provided by main if wanted as extern C definitions
-extern uint32_t log_level_at_run_time __attribute__ ((weak));;
+#ifdef _MSC_VER
+	__declspec(selectany) extern uint32_t log_level_at_run_time;
+	// unknown equiv for non-extern functions
+	void debug_output_(const char *);
+#else
+	extern uint32_t log_level_at_run_time __attribute__((weak));
+	void debug_output_(const char *) __attribute__((weak));
+#endif
 void log_print_(int level, int line, const char *func, const char *file, const char *msg, ...);
-void debug_output_(const char *) __attribute__ ((weak));
+
 #ifdef __cplusplus
 }
 #endif

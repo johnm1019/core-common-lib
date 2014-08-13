@@ -8,8 +8,19 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
+// make warnings cross platform
+// Use: #pragma message WARN("My message")
+#ifdef _MSC_VER
+#   define STRINGISE_IMPL(x) #x
+#   define STRINGISE(x) STRINGISE_IMPL(x)
+#   define FILE_LINE_LINK __FILE__ "(" STRINGISE(__LINE__) ") : "
+#   define WARN(exp) (FILE_LINE_LINK "WARNING: " exp)
+#else//__GNUC__ - may need other defines for different compilers
+#   define WARN(exp) ("WARNING: " exp)
+#endif
+
 #if !defined(RELEASE_BUILD) && !defined(DEBUG_BUILD)
-#warning  "Defaulting to Release Build"
+#pragma message WARN("Defaulting to Release Build")
 #define RELEASE_BUILD
 #undef  DEBUG_BUILD
 #endif

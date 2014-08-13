@@ -85,6 +85,17 @@
   #define __INLINE         inline                                     /*!< inline keyword for TASKING Compiler   */
   #define __STATIC_INLINE  static inline
 
+#elif defined ( _MSC_VER ) && ( _MSC_VER > 1700 )                     /*!< detect Visual Studio and support only >=VS11 */
+  #define __ASM            __asm                                      /*!< asm keyword for TASKING Compiler      */
+  #define __INLINE         inline                                     /*!< inline keyword for TASKING Compiler   */
+  #define __STATIC_INLINE  static inline
+	 // if we aren't on arm, ignore this instruction so we can compile
+  #ifndef _M_ARM
+	 static void __DSB() {};
+  #else
+	 // if we are, use the lowercase version supported by MSVC
+    #define __DSB          __dsb									  /*!< change keyword to lowercase for msvc*/
+  #endif
 #endif
 
 /** __FPU_USED indicates whether an FPU is used or not. This core does not support an FPU at all
