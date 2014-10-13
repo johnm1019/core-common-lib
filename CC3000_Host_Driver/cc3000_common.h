@@ -162,7 +162,7 @@ extern "C" {
 // on MSVC 2012,2013, time_t and clock_t are 32-bits at the smallest, and most likely 64-bits
 // so define nothing and leave them default.
 // For ARM, define them as big as we want them
-#ifdef _ARM
+#ifndef _MSC_VER
 	typedef INT32 time_t;
 	typedef UINT32 clock_t;
 #endif
